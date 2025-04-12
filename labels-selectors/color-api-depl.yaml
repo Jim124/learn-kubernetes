@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: color-api
+      environment: local
+      tier: backend
+    matchExpressions:
+      - key: managed
+        operator: Exists
+  template:
+    metadata:
+      labels:
+        app: color-api
+        environment: local
+        tier: backend
+        release: stable
+        managed: 'deployment'
+    spec:
+      containers:
+        - name: color-api
+          image: jim124/color-api:1.1.0
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 80
