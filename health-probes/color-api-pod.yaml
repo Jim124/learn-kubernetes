@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: color-api-pod
-      image: jim124/color-api:1.2.0
+      image: jim124/color-api:1.2.1
       resources:
         limits:
           memory: '512Mi'
@@ -18,11 +18,19 @@ spec:
       env:
         - name: DELAY_STARTUP
           value: 'false'
+        - name: FAIL_LIVENESS
+          value: 'true'
       ports:
         - containerPort: 80
       startupProbe:
         httpGet:
-          path: /health
+          path: /up
           port: 80
         failureThreshold: 2
         periodSeconds: 3
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 80
+        failureThreshold: 3
+        periodSeconds: 10

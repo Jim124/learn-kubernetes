@@ -33,6 +33,9 @@ app.get('/ready', (req, res) => {
   }
   return res.status(200).send('ok');
 });
+app.get('/up', (req, res) => {
+  return res.status(200).send('ok');
+});
 app.get('/health', (req, res) => {
   if (fail_liveness) {
     return res.status(503).send('Service Unhealthy');
