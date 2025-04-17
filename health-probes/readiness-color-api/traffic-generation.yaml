@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: traffic-generation
+  labels:
+    app: traffic-generation
+spec:
+  containers:
+    - name: traffic-generation
+      image: lmacademy/traffic-generator:1.0.0
+      resources:
+        limits:
+          memory: '512Mi'
+          cpu: '500m'
+        requests:
+          memory: '512Mi'
+          cpu: '500m'
+      args:
+        - 'color-api-svc/api'
+        - '0.5'

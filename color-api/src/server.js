@@ -10,7 +10,7 @@ const hostName = os.hostname();
 const delay_startup = process.env.DELAY_STARTUP === 'true';
 const fail_liveness = process.env.FAIL_LIVENESS === 'true';
 const fail_readiness =
-  process.env.FAIL_READINESS === 'true' ? Math.random < 0.5 : false;
+  process.env.FAIL_READINESS === 'true' ? Math.random() < 0.5 : false;
 
 console.log(
   `Delay startup:${delay_startup}, fail_liveness: ${fail_liveness}, fail_readiness: ${fail_readiness}`

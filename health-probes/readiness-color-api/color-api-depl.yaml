@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-api-dep
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: color-api
+  template:
+    metadata:
+      labels:
+        app: color-api
+    spec:
+      containers:
+        - name: color-api
+          image: jim124/color-api:1.2.2
+          resources:
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+          env:
+            - name: DELAY_STARTUP
+              value: 'false'
+            - name: FAIL_LIVENESS
+              value: 'false'
+            - name: FAIL_READINESS
+              value: 'true'
+          ports:
+            - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /up
+              port: 80
+            failureThreshold: 2
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            failureThreshold: 2
+            periodSeconds: 5
