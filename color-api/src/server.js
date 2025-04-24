@@ -1,11 +1,27 @@
 import express from 'express';
 import os from 'os';
-
+import fs from 'fs';
+import path from 'path';
 const app = express();
 
 const port = 80;
 
-const color = 'blue';
+const getColor = () => {
+  let color = process.env.DEFAULT_COLOR;
+  const filePath = process.env.COLOR_PATH;
+  if (filePath) {
+    try {
+      const colorFromFile = fs.readFileSync(path.resolve(filePath), 'utf8');
+      color = colorFromFile.trim();
+    } catch (error) {
+      console.error(`Failed to read content of ${filePath}`);
+      console.error(error);
+    }
+  }
+  return color || 'blue';
+};
+
+const color = getColor();
 const hostName = os.hostname();
 const delay_startup = process.env.DELAY_STARTUP === 'true';
 const fail_liveness = process.env.FAIL_LIVENESS === 'true';
