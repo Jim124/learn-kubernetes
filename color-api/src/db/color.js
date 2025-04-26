@@ -8,7 +8,7 @@ const ColorSchema = new mongoose.Schema({
 const Color = mongoose.model('Color', ColorSchema);
 
 export const saveColor = async ({ key, value }) => {
-  const color = await Color.findOne({ key });
+  let color = await Color.findOne({ key });
   if (color) {
     color.set({ value });
   } else {
