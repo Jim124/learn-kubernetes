@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-color-cred
+type: Opaque
+data:
+  username: Y29sb3JfdXNlcg== #color_user
+  password: Y29sb3JfcGFzcw== # color_pass
