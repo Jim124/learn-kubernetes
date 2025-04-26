@@ -1,5 +1,6 @@
 import express from 'express';
-import { getColor, getHostName } from '../utils.js';
+import { getHostName } from '../utils.js';
+import { getColor } from '../db/color.js';
 const apiRouter = express.Router();
 apiRouter.get('/', (req, res) => {
   const color = getColor();
