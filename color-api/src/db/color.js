@@ -21,8 +21,8 @@ export const getColors = async () => await Color.find();
 
 export const getColor = async ({ key }) => {
   let color = await Color.findOne({ key });
-  if (!color) {
-    color = process.env.DEFAULT_COLOR;
+  if (color) {
+    return color.value || 'blue';
   }
-  return color || 'blue';
+  return process.env.DEFAULT_COLOR || 'blue';
 };
