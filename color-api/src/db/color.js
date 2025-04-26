@@ -8,9 +8,9 @@ const ColorSchema = new mongoose.Schema({
 const Color = mongoose.model('Color', ColorSchema);
 
 export const saveColor = async ({ key, value }) => {
-  const color = await Color.find({ key });
+  const color = await Color.findOne({ key });
   if (color) {
-    color.set(value);
+    color.set({ value });
   } else {
     color = new Color({ key, value });
   }
@@ -19,10 +19,15 @@ export const saveColor = async ({ key, value }) => {
 
 export const getColors = async () => await Color.find();
 
-export const getColor = async ({ key }) => {
+export const getColor = async ({ key, strict = false }) => {
   let color = await Color.findOne({ key });
+  if (strict && !color) {
+    return undefined;
+  }
   if (color) {
-    return color.value || 'blue';
+    return color.value;
   }
   return process.env.DEFAULT_COLOR || 'blue';
 };
+
+export const deleteColor = async ({ key }) => await Color.deleteOne({ key });

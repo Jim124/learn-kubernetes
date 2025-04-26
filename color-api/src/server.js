@@ -1,9 +1,12 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import rootRouter from './routes/root.js';
 import healthRouter from './routes/health.js';
 import apiRouter from './routes/api.js';
+import mongoose from 'mongoose';
 const app = express();
 
+app.use(bodyParser.json());
 app.use('/api', apiRouter);
 app.use('/', healthRouter);
 app.use('/', rootRouter);
@@ -18,6 +21,8 @@ if (delay_startup) {
   // to illustrate startup probes
   while (Date.now() - start < 60000) {}
 }
+await mongoose.connect(process.env.DB_URL);
+console.log('connected to mongodb successfully');
 app.listen(port, () => {
   console.log(`serving is running on port ${port}`);
 });

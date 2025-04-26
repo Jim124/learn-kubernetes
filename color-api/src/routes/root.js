@@ -3,9 +3,9 @@ import { getHostName } from '../utils.js';
 import { getColor } from '../db/color.js';
 
 const rootRouter = express.Router();
-rootRouter.get('/', (req, res) => {
+rootRouter.get('/', async (req, res) => {
   const { colorKey } = req.query;
-  const color = getColor({ key: colorKey });
+  const color = await getColor({ key: colorKey });
   const hostName = getHostName();
   res.send(
     `<h1 style="color:${color}">hello from kubernetes,hostname:${hostName}</h1>`
