@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-db
+  labels:
+    app: postgresDb
+data:
+  dbName: comfy
+  up.sql: |
+    create table if not exists users(
+      id char(27) primary key,
+      identifier varchar(24) not null,
+      password varchar(24) not null
+    );

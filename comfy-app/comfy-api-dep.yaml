@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comfy-api
+spec:
+  selector:
+    matchLabels:
+      app: comfy-api
+  template:
+    metadata:
+      labels:
+        app: comfy-api
+    spec:
+      containers:
+        - name: comfy-api
+          image: jim124/comfy-backend:1.0.0
+          env:
+            - name: PORT
+              value: '8080'
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: postgres-cred
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-cred
+            - name: DB_HOST
+              value: 'postgres-ss-0.postgres-svc.default.svc.cluster.local'
+
+            - name: dbName
+              valueFrom:
+                configMapKeyRef:
+                  key: dbName
+                  name: postgres-init-db
+            - name: DB_URL
+              #postgres://username:password@localhost:5432/database_name?sslmode=disable
+              value: 'postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST)/$(dbName)?sslmode=disable'
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+            requests:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 8080

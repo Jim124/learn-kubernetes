@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-cred
+  labels:
+    app: postgres
+type: Opaque
+data:
+  username: Y29tZnlfdXNlcg== #comfy_user
+  password: Y29tZnlfcGFzcw== #comfy_pass
