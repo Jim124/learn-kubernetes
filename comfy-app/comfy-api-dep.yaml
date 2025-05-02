@@ -29,7 +29,6 @@ spec:
                   name: postgres-cred
             - name: DB_HOST
               value: 'postgres-ss-0.postgres-svc.default.svc.cluster.local'
-
             - name: dbName
               valueFrom:
                 configMapKeyRef:
@@ -38,6 +37,8 @@ spec:
             - name: DB_URL
               #postgres://username:password@localhost:5432/database_name?sslmode=disable
               value: 'postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST)/$(dbName)?sslmode=disable'
+            - name: TOKEN_SECRET
+              value: tokenSecret
           resources:
             limits:
               memory: '128Mi'
