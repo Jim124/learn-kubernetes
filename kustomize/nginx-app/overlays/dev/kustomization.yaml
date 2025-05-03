@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: dev
 resources:
   - ../../base
+  - nginx-dep.yaml
 namePrefix: dev-
 nameSuffix: -v1
 labels:
@@ -20,7 +21,7 @@ replicas:
   - name: nginx
     count: 3
 generatorOptions:
-  disableNameSuffixHash: true
+  disableNameSuffixHash: false
 configMapGenerator:
   - name: feature-flag-config
     literals:
@@ -34,3 +35,8 @@ configMapGenerator:
   - name: local-config
     envs:
       - .env.local
+secretGenerator:
+  - name: local-config
+    envs:
+      - .env.local
+    type: Opaque
