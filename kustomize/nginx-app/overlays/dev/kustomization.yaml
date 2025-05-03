@@ -1,11 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: dev
+resources:
+  - ../../base
 namePrefix: dev-
 nameSuffix: -v1
-commonLabels:
-  tier: backend
-  team: finance
+labels:
+  - pairs:
+      tier: backend
+      team: finance
 commonAnnotations:
   developer: 'test@example.com'
   repository: 'github.com'
@@ -16,5 +19,18 @@ images:
 replicas:
   - name: nginx
     count: 3
-resources:
-  - ../../base
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: feature-flag-config
+    literals:
+      - use_db=true
+      - expose_metrics=true
+      - some_other_feature=true
+
+  - name: db-init-config
+    files:
+      - db-init.js
+  - name: local-config
+    envs:
+      - .env.local
