@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: dev
 resources:
   - ../../base
-  - nginx-dep.yaml
 namePrefix: dev-
 nameSuffix: -v1
 labels:
@@ -14,9 +13,9 @@ commonAnnotations:
   developer: 'test@example.com'
   repository: 'github.com'
   maintainer: 'test@example.com'
-images:
-  - name: nginx
-    newTag: 1.0.1
+# images:
+#   - name: nginx
+#     newTag: 1.27.1
 replicas:
   - name: nginx
     count: 3
@@ -40,3 +39,6 @@ secretGenerator:
     envs:
       - .env.local
     type: Opaque
+
+patches:
+  - path: nginx-path.yaml

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-inside-dep
+  name: nginx-reverse
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: nginx-inside-dep
+      app: nginx-reverse
   template:
     metadata:
       labels:
-        app: nginx-inside-dep
+        app: nginx-reverse
     spec:
       containers:
         - name: nginx
@@ -24,10 +24,3 @@ spec:
               cpu: '500m'
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: db-config
-              mountPath: /data/config
-      volumes:
-        - name: db-config
-          configMap:
-            name: db-init-config
