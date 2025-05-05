@@ -40,5 +40,30 @@ secretGenerator:
       - .env.local
     type: Opaque
 
+# patches:
+#   - path: nginx-path.yaml
+# patches:
+#   - patch: |-
+#       apiVersion: apps/v1
+#       kind: Deployment
+#       metadata:
+#         name: nginx-reverse
+#       spec:
+#         template:
+#           spec:
+#             containers:
+#               - name: nginx
+#                 image: nginx:1.27.1
+
 patches:
-  - path: nginx-path.yaml
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: nginx-reverse
+      spec:
+        template:
+          spec:
+            containers:
+              - name: nginx
+                image: nginx:1.27.1
