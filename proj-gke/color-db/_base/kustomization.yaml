@@ -3,9 +3,8 @@ kind: Kustomization
 resources:
   - mongodb-svc.yaml
   - mongodb-ss.yaml
-commonLabels:
-  app: mongo
-  project: proj-gke
+  - ./network-policies/allow-color-api.yaml
+
 configMapGenerator:
   - name: mongodb-init-colordb
     files:

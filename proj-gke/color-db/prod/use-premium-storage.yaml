@@ -1,0 +1,17 @@
+- op: replace
+  path: /spec/volumeClaimTemplates/0/spec/storageClassName
+  value: premium-rwo
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: mongodb-ss
+# spec:
+#   volumeClaimTemplates:
+#     - metadata:
+#         name: mongodb-data
+#       spec:
+#         accessModes: ['ReadWriteOnce']
+#         storageClassName: premium-rwo
+#         resources:
+#           requests:
+#             storage: 10Gi

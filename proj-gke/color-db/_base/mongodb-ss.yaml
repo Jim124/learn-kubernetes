@@ -13,18 +13,18 @@ spec:
       labels:
         app: mongodb
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: topology.kubernetes.io/zone
-                    operator: in
-                    values:
-                      - europe-west4-a
-                      - europe-west4-b
-                      - europe-west4-c
-                      - europe-west1-b
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #         - matchExpressions:
+      #             - key: topology.kubernetes.io/zone
+      #               operator: In
+      #               values:
+      #                 - europe-west4-a
+      #                 - europe-west4-b
+      #                 - europe-west4-c
+      #                 - europe-west1-b
       containers:
         - name: mongo
           image: mongo:8.0.0
@@ -59,7 +59,7 @@ spec:
               memory: '4Gi'
               cpu: '1'
             limits:
-              memory: '8Gi'
+              memory: '4Gi'
               cpu: '2'
           volumeMounts:
             - name: mongodb-data
