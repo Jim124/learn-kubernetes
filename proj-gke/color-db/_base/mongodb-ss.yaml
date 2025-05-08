@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-ss
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  serviceName: mongodb-svc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: in
+                    values:
+                      - europe-west4-a
+                      - europe-west4-b
+                      - europe-west4-c
+                      - europe-west1-b
+      containers:
+        - name: mongo
+          image: mongo:8.0.0
+          ports:
+            - containerPort: 27017
+              name: web
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: USERNAME
+                  name: mongodb-root-cred
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: mongodb-root-cred
+            - name: DB_NAME
+              value: colordb
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: USERNAME
+                  name: mongodb-colordb-cred
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: mongodb-colordb-cred
+          resources:
+            requests:
+              memory: '4Gi'
+              cpu: '1'
+            limits:
+              memory: '8Gi'
+              cpu: '2'
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+            - name: mongodb-init-config
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mongodb-init-config
+          configMap:
+            name: mongodb-init-colordb
+  volumeClaimTemplates:
+    - metadata:
+        name: mongodb-data
+      spec:
+        accessModes: ['ReadWriteOnce']
+        storageClassName: standard-rwo
+        resources:
+          requests:
+            storage: 10Gi

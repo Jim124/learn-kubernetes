@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: prod-1
+
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: mongodb-root-cred
+    envs:
+      - .env.root-cred.prod
+  - name: mongodb-colordb-cred
+    envs:
+      - .env.colordb-cred.prod
